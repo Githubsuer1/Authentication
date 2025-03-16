@@ -14,7 +14,7 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { getState
     if(!token) return rejectWithValue("No token found");
     try {
         const headers = {Authorization:`Bearer ${token}`}
-        const response = await axios.get('/api/v1/auth/getuser',  {headers} );
+        const response = await axios.get('https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/getuser',  {headers} );
         return response.data.user;
     } catch (error) {
         localStorage.removeItem("user");
@@ -26,7 +26,7 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { getState
 // 2. loginuser 
 export const loginUser = createAsyncThunk('auth/loginUser', async (userData,{rejectWithValue})=>{
     try {
-        const response = await axios.post('/api/v1/auth/login',userData,{withCredentials:true});
+        const response = await axios.post('https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/login',userData,{withCredentials:true});
         localStorage.setItem("user",JSON.stringify(response.data.safeUser));
         localStorage.setItem("token",response.data.accesstoken)
         // console.log(response.data);
@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (userData,{rej
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData,{rejectWithValue})=>{
     try {
         const headers = {"Content-Type":"application/json"}
-        const response = await axios.post("/api/v1/auth/register",userData,{headers});
+        const response = await axios.post("https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/register",userData,{headers});
         // console.log(response.data);
         return response.data;
 
@@ -53,7 +53,7 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 // 4. refreshtoken evrey page reload
 export const refreshAccessToken = createAsyncThunk("auth/refreshtoken", async () => {
     try {
-        const response = await axios.get("/api/v1/auth/refreshtoken", { withCredentials: true });
+        const response = await axios.get("https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/refreshtoken", { withCredentials: true });
         localStorage.setItem("token", response.data.accesstoken);
         dispatch(fetchUser());
     } catch (error) {
