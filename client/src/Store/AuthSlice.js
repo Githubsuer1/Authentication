@@ -26,7 +26,8 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { getState
 // 2. loginuser 
 export const loginUser = createAsyncThunk('auth/loginUser', async (userData,{rejectWithValue})=>{
     try {
-        const response = await axios.post('https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/login',userData,{withCredentials:true});
+        const headers = {"Access-Control-Allow-Origin":"*"};
+        const response = await axios.post('https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/login',userData,{withCredentials:true},{headers});
         localStorage.setItem("user",JSON.stringify(response.data.safeUser));
         localStorage.setItem("token",response.data.accesstoken)
         // console.log(response.data);
