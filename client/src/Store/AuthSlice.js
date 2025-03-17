@@ -11,7 +11,7 @@ const initialState = {
 // console.log(process.env.NODE_ENV);
 
 const API_URL = process.env.NODE_ENV === 'production' ? 
-'https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth' 
+'https://auth-backend-sandy.vercel.app/api/v1/auth' 
 :
 'http://localhost:8000/api/v1/auth';
 
