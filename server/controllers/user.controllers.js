@@ -70,7 +70,8 @@ const userControll = {
                 secure: process.env.NODE_ENV === "production",
                 path:'/api/v1/auth/refreshtoken',
                 sameSite:"Strict",
-                maxAge:7*24*60*60*1000
+                maxAge:7*24*60*60*1000,
+                
             })
 
             // creating a safe user object to send only required information
