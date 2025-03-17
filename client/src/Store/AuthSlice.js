@@ -8,13 +8,19 @@ const initialState = {
     error:null
 };
 
+const API_URL = process.env.NODE_ENV === 'production' ? 
+'https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth' 
+:
+'http://localhost:5000/api/v1/auth';
+
+
 // 1. fetching user from backend via asyncthunk
 export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { getState, rejectWithValue }) => {
     const token = getState().auth.token;
     if(!token) return rejectWithValue("No token found");
     try {
         const headers = {Authorization:`Bearer ${token}`}
-        const response = await axios.get('https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/getuser',  {headers} );
+        const response = await axios.get(`${API_URL}/getuser`,  {headers} );
         return response.data.user;
     } catch (error) {
         localStorage.removeItem("user");
@@ -27,7 +33,7 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { getState
 export const loginUser = createAsyncThunk('auth/loginUser', async (userData,{rejectWithValue})=>{
     try {
         const headers = {"Access-Control-Allow-Origin":"*"};
-        const response = await axios.post('https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/login',userData,{withCredentials:true},{headers});
+        const response = await axios.post(`${API_URL}/login`,userData,{withCredentials:true},{headers});
         localStorage.setItem("user",JSON.stringify(response.data.safeUser));
         localStorage.setItem("token",response.data.accesstoken)
         // console.log(response.data);
@@ -41,7 +47,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (userData,{rej
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData,{rejectWithValue})=>{
     try {
         const headers = {"Content-Type":"application/json"}
-        const response = await axios.post("https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/register",userData,{headers});
+        const response = await axios.post(`${API_URL}/register`,userData,{headers});
         // console.log(response.data);
         return response.data;
 
@@ -54,7 +60,7 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 // 4. refreshtoken evrey page reload
 export const refreshAccessToken = createAsyncThunk("auth/refreshtoken", async () => {
     try {
-        const response = await axios.get("https://vercel.com/siddhant-mishras-projects-458b40df/auth-backend/api/v1/auth/refreshtoken", { withCredentials: true });
+        const response = await axios.get(`${API_URL}/refreshtoken`, { withCredentials: true });
         localStorage.setItem("token", response.data.accesstoken);
         dispatch(fetchUser());
     } catch (error) {
