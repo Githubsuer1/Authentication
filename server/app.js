@@ -10,10 +10,17 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
-app.use(cors({
-    origin:"*"
-}));
 
+const allowedOrigins = ['http://localhost:5173', 'https://authentication-phi-two.vercel.app/'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 // auth routes 
 import authRouter from './routes/user.routes.js';
